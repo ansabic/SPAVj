@@ -115,16 +115,18 @@ Poligon* novi_poligon(float *niz_x, float *niz_y, int n) {
 
 Tocka** pozitivni(Poligon *p, int *np) {
     int* size = np;
-    Tocka **tempResult = malloc(*np * sizeof(struct Tocka**));
+    Tocka **tempResult = malloc(sizeof(struct Tocka**));
     int br = 0;
     for(int j = 0; j < size[0]; j++) {
-        tempResult[j] = malloc(size[j] * sizeof(struct Tocka*));
+        tempResult[j] = malloc(size[j] * sizeof(Tocka));
+        Tocka* buffer = malloc(size[j] * sizeof(Tocka));
         for (int i = 0; i < p->n; i++) {
-            if (p->vrhovi[i].x >= 0 && p->vrhovi->y >= 0) {
-                tempResult[j][br] = p[j].vrhovi[i];
+            if (p[i].vrhovi[i].x >= 0 && p->vrhovi[i].y >= 0) {
+                buffer[br] = p[j].vrhovi[i];
                 br++;
             }
         }
+        tempResult[j] = buffer;
         np[j] = br;
         br = 0;
     }
