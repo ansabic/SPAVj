@@ -9,7 +9,7 @@ int mystrcmp(char* prvi, char* drugi) {
 	return 0;
 }
 
-int main() {
+int main03() {
 	char prvi[20];
 	char drugi[20];
 	printf("Unesi prvi string: \n");

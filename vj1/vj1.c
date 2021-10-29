@@ -48,7 +48,7 @@ void printPointersStartValues(int** a, int n) {
     }
 }
 int* podniz(int *niz,int start, int stop) {
-    int* a = malloc(sizeof(int));
+    int* a = malloc(sizeof(int*));
     for(int i = 0; i <= stop - start; i++) {
         a[i] = niz[start + i];
     }
@@ -98,8 +98,8 @@ void printPoligon(Poligon* poligon) {
 
 Poligon* novi_poligon(float *niz_x, float *niz_y, int n) {
     if(n >= 3) {
-        Poligon* rez = (struct Poligon*) malloc(sizeof(Poligon));
-        rez->vrhovi = (struct Tocka*) malloc(sizeof(Tocka));
+        Poligon* rez =  malloc(sizeof(struct Poligon*));
+        rez->vrhovi = malloc(sizeof(struct Tocka*));
         rez->n = n;
         for(int i =0; i < n; i++) {
             Tocka tempTocka;
@@ -114,13 +114,25 @@ Poligon* novi_poligon(float *niz_x, float *niz_y, int n) {
 }
 
 Tocka** pozitivni(Poligon *p, int *np) {
-    int *temp;
+    int* size = np;
+    Tocka **tempResult = malloc(*np * sizeof(struct Tocka**));
     int br = 0;
-
+    for(int j = 0; j < size[0]; j++) {
+        tempResult[j] = malloc(size[j] * sizeof(struct Tocka*));
+        for (int i = 0; i < p->n; i++) {
+            if (p->vrhovi[i].x >= 0 && p->vrhovi->y >= 0) {
+                tempResult[j][br] = p[j].vrhovi[i];
+                br++;
+            }
+        }
+        np[j] = br;
+        br = 0;
+    }
+    return tempResult;
 }
 
 
-        int main11() {
+int main() {
     int a[20];
     int b[20];
 
@@ -133,7 +145,7 @@ Tocka** pozitivni(Poligon *p, int *np) {
     int pocetak;
     int kraj;
 
-    int* nth = malloc(sizeof(int));
+    int* nth = malloc(sizeof(int*));
     unesiNizFloat(c, &n);
     unesiNizFloat(d, &m);
 
@@ -141,6 +153,13 @@ Tocka** pozitivni(Poligon *p, int *np) {
     //int** temp = podijeli(a,n);
     //printPointersStartValues(temp,2);
     Poligon* poligon = novi_poligon(c,d,n) ;
-    printPoligon(poligon);
-
+    //printPoligon(poligon);
+    int * size  = malloc(sizeof(int*));
+    size[0] = 10;
+    Tocka** rez = pozitivni(poligon,size);
+    for(int j = 0; j< n; j++) {
+        for(int i = 0; i< size[j]; i++) {
+            printf("(%f,%f)", rez[j][i].x,rez[j][i].y);
+        }
+    }
 }
