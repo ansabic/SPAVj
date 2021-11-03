@@ -37,9 +37,9 @@ void unesiRaspon(int* pocetak, int* kraj) {
     printf("Odaberi kraj: \n");
     scanf("%d",kraj);
 }
-void printNiz(int* niz, int n) {
+void printNiz(float* niz, int n) {
     for(int i = 0; i<n; i++) {
-        printf("%d ",niz[i]);
+        printf("%f ",niz[i]);
     }
 }
 void printPointersStartValues(int** a, int n) {
@@ -96,15 +96,15 @@ void printPoligon(Poligon* poligon) {
     }
 }
 
-Poligon* novi_poligon(float *niz_x, float *niz_y, int n) {
+Poligon* novi_poligon(const float *niz_x, const float *niz_y, int n) {
     if(n >= 3) {
-        Poligon* rez =  malloc(sizeof(struct Poligon*));
-        rez->vrhovi = malloc(sizeof(struct Tocka*));
+        Poligon* rez =  malloc(sizeof(Poligon));
+        rez->vrhovi = malloc(n * sizeof(Tocka));
         rez->n = n;
         for(int i =0; i < n; i++) {
             Tocka tempTocka;
-            tempTocka.x = niz_x[i];
-            tempTocka.y = niz_y[i];
+            tempTocka.x = *(niz_x + i);
+            tempTocka.y = *(niz_y + i);
             rez->vrhovi[i] = tempTocka;
         }
         return rez;
@@ -114,22 +114,16 @@ Poligon* novi_poligon(float *niz_x, float *niz_y, int n) {
 }
 
 Tocka** pozitivni(Poligon *p, int *np) {
-    int* size = np;
-    Tocka **tempResult = malloc(sizeof(struct Tocka**));
+    Tocka **tempResult = malloc( p->n * sizeof(struct Tocka*));
     int br = 0;
-    for(int j = 0; j < size[0]; j++) {
-        tempResult[j] = malloc(size[j] * sizeof(Tocka));
-        Tocka* buffer = malloc(size[j] * sizeof(Tocka));
-        for (int i = 0; i < p->n; i++) {
-            if (p[i].vrhovi[i].x >= 0 && p->vrhovi[i].y >= 0) {
-                buffer[br] = p[j].vrhovi[i];
-                br++;
-            }
+    for (int i = 0; i < p->n; i++) {
+        *(tempResult + i) = malloc(sizeof(Tocka));
+        if (p->vrhovi[i].x >= 0 && p->vrhovi[i].y >= 0) {
+            *tempResult[br] = *(p->vrhovi + i);
+            br++;
         }
-        tempResult[j] = buffer;
-        np[j] = br;
-        br = 0;
     }
+    *np = br;
     return tempResult;
 }
 
@@ -141,27 +135,27 @@ int main() {
     float c[20];
     float d[20];
 
-    int n;
-    int m;
+    int* n = malloc(sizeof(int));
+    int* m = malloc(sizeof(int));
 
     int pocetak;
     int kraj;
 
     int* nth = malloc(sizeof(int*));
-    unesiNizFloat(c, &n);
-    unesiNizFloat(d, &m);
+    unesiNizFloat(c, n);
+    unesiNizFloat(d, m);
 
     //unesiRaspon(&pocetak, &kraj);
     //int** temp = podijeli(a,n);
     //printPointersStartValues(temp,2);
-    Poligon* poligon = novi_poligon(c,d,n) ;
+    Poligon* poligon = novi_poligon(c,d,*n) ;
     //printPoligon(poligon);
-    int * size  = malloc(sizeof(int*));
-    size[0] = 10;
+    int * size  = malloc(sizeof(int));
+    size[0] = 1;
+
     Tocka** rez = pozitivni(poligon,size);
-    for(int j = 0; j< n; j++) {
-        for(int i = 0; i< size[j]; i++) {
-            printf("(%f,%f)", rez[j][i].x,rez[j][i].y);
-        }
+    for (int i = 0; i < *size; i++) {
+        printf("(%f,%f)", rez[i]->x, rez[i]->y);
     }
+
 }
