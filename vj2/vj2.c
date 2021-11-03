@@ -25,7 +25,7 @@ void printObjekt(Objekt3D* objekt) {
 }
 
 int main() {
-    FILE* file = fopen("/home/antonio/Downloads/primjerbin", "rb");
+    FILE* file = fopen("/home/antonio/Downloads/primjerbin.stl", "rb");
     Objekt3D* objekt = readFileBinary(file);
     printObjekt(objekt);
 }
