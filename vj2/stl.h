@@ -29,9 +29,12 @@ typedef struct {
     unsigned int n;
 } Objekt3D;
 
-Objekt3D* readFileBinary(FILE* file);
-void writeFileBinary(FILE* file, Objekt3D* objekt);
-Objekt3D* readFileText(FILE* file);
-void writeFileText(FILE* file, char* fileName, Objekt3D* objekt);
+Objekt3D *readFileBinary(FILE *file);
+
+void writeFileBinary(FILE *file, Objekt3D *objekt);
+
+Objekt3D *readFileText(FILE *file);
+
+void writeFileText(FILE *file, char *fileName, Objekt3D *objekt);
 
 #endif //SPAVJ_STL_H
