@@ -20,12 +20,21 @@ void printObjekt(Objekt3D* objekt) {
             else
                 printf("\n");
         }
+        if((void*) (size_t) trokut->boja != NULL)
+            printf("\t BOJA:\t%d\n",trokut->boja);
+
         printf("-----------------------------------------------------------------------\n");
     }
 }
 
 int main() {
-    FILE* file = fopen("/home/antonio/Downloads/primjerbin.stl", "rb");
-    Objekt3D* objekt = readFileBinary(file);
+    FILE* file = fopen("/home/antonio/Downloads/readTest.stl", "rt");
+    Objekt3D* objekt = readFileText(file);
+    /*FILE* writeFile = fopen("/home/antonio/Downloads/myStl", "wb");
+    writeFileBinary(writeFile,objekt);
+    FILE* readFile = fopen("/home/antonio/Downloads/myStl", "rb");
+    Objekt3D* resultObjekt = readFileBinary(readFile);*/
     printObjekt(objekt);
+    //FILE* writeText = fopen("/home/antonio/Downloads/readTest.stl", "wt");
+    //writeFileText(writeText,"readTest",objekt);
 }
