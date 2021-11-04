@@ -27,7 +27,7 @@ void printObjekt(Objekt3D *objekt) {
     }
 }
 
-int main() {
+int main299() {
     FILE *file = fopen("/home/antonio/Downloads/readTest.stl", "rt");
     Objekt3D *objekt = readFileText(file);
     /*FILE* writeFile = fopen("/home/antonio/Downloads/myStl", "wb");
