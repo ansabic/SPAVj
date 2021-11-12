@@ -77,7 +77,7 @@ void addToEndCoordinateBinary(Koordinata *koordinata, FILE *file) {
     fwrite(koordinata, sizeof(Koordinata), 1, file);
 }
 
-int main() {
+int main999() {
     /*int n;
     printf("Unesi kolicinu brojeva za unos: \n");
     scanf("%d",&n);

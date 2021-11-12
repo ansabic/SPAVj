@@ -47,36 +47,42 @@ void printPointersStartValues(int** a, int n) {
         printf("%d \n",*a[i]);
     }
 }
-int* podniz(int *niz,int start, int stop) {
-    int* a = malloc(sizeof(int*));
+int* podniz(const int *niz,int start, int stop) {
+    int* a = malloc(sizeof(int) * (start - stop + 1));
     for(int i = 0; i <= stop - start; i++) {
         a[i] = niz[start + i];
     }
     return a;
 }
 
-int* filtriraj(int *niz, int n, int th, int *nth) {
-    int* rez = malloc(sizeof(niz));
-    int* counter = malloc(sizeof(int));
+int* filtriraj(const int *niz, int n, int th, int *nth) {
+    int* rez = malloc(sizeof(int) * n);
+    int counter = 0;
     for(int i =0; i < n; i++) {
         if(niz[i]< th) {
-                rez[*counter] = niz[i];
-                *counter = *counter + 1;
+                rez[counter] = niz[i];
+                counter++;
         }
     }
-    *nth = *counter;
+    rez = realloc(rez,sizeof (int) * counter);
+    *nth = counter;
     return rez;
 }
 
-int** podijeli(int *niz, int n) {
-    int** rez = malloc(sizeof(int**) * 2);
-    int half = n/2;
-    for(int i = 0; i< 2; i++) {
-        int* tempRez = malloc(sizeof(int*));
-        tempRez = niz;
-        rez[i] = tempRez;
-        niz +=half;
+int** podijeli(const int *niz, int n) {
+    int** rez = malloc(sizeof(int*) * 2);
+    int firstHalf = n/2;
+    int secondHalf = n - n/2;
+    int* prvi = malloc(sizeof (int) * firstHalf);
+    int* drugi = malloc(sizeof (int) * secondHalf);
+    for(int i = 0; i < n; i++) {
+        if(i < firstHalf)
+            *(prvi + i) = niz[i];
+        else
+            *(drugi + i - firstHalf) = niz[i];
     }
+    *(rez) = prvi;
+    *(rez + 1) = drugi;
     return rez;
 }
 
@@ -102,10 +108,8 @@ Poligon* novi_poligon(const float *niz_x, const float *niz_y, int n) {
         rez->vrhovi = malloc(n * sizeof(Tocka));
         rez->n = n;
         for(int i =0; i < n; i++) {
-            Tocka tempTocka;
-            tempTocka.x = *(niz_x + i);
-            tempTocka.y = *(niz_y + i);
-            rez->vrhovi[i] = tempTocka;
+            rez->vrhovi[i].x =*(niz_x + i);
+            rez->vrhovi[i].y = *(niz_y + i);
         }
         return rez;
     }
@@ -114,12 +118,11 @@ Poligon* novi_poligon(const float *niz_x, const float *niz_y, int n) {
 }
 
 Tocka** pozitivni(Poligon *p, int *np) {
-    Tocka **tempResult = malloc( p->n * sizeof(struct Tocka*));
+    Tocka **tempResult = malloc( p->n * sizeof(Tocka*));
     int br = 0;
     for (int i = 0; i < p->n; i++) {
-        *(tempResult + i) = malloc(sizeof(Tocka));
         if (p->vrhovi[i].x >= 0 && p->vrhovi[i].y >= 0) {
-            *tempResult[br] = *(p->vrhovi + i);
+            tempResult[br] = (p->vrhovi + i);
             br++;
         }
     }
@@ -128,7 +131,7 @@ Tocka** pozitivni(Poligon *p, int *np) {
 }
 
 
-int main111() {
+int main() {
     int a[20];
     int b[20];
 
