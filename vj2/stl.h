@@ -18,10 +18,9 @@ typedef struct {
 } Normala;
 
 typedef struct {
-    Tocka *tocke;
+    Tocka tocke[3];
     Normala normala;
     unsigned short boja;
-
 } Trokut;
 
 typedef struct {
@@ -29,11 +28,11 @@ typedef struct {
     unsigned int n;
 } Objekt3D;
 
-Objekt3D *readFileBinary(FILE *file);
+Objekt3D readFileBinary(FILE *file);
 
 void writeFileBinary(FILE *file, Objekt3D *objekt);
 
-Objekt3D *readFileText(FILE *file);
+Objekt3D readFileText(FILE *file);
 
 void writeFileText(FILE *file, char *fileName, Objekt3D *objekt);
 

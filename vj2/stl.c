@@ -11,56 +11,42 @@ void readHeader(FILE *file) {
 }
 
 unsigned int readNumberOfTriangles(FILE *file) {
-    unsigned int *result = malloc(sizeof(unsigned int));
-    fread(result, sizeof(unsigned int), 1, file);
-    return *result;
+    unsigned int result;
+    fread(&result, sizeof(unsigned int), 1, file);
+    return result;
 }
 
-Trokut *readTrokut(FILE *file, int enableColor) {
-    Trokut *trokut = malloc(sizeof(Trokut));
-    trokut->tocke = malloc(sizeof(Tocka) * 3);
-    Normala *normala = malloc(sizeof(Normala));
+Trokut readTrokut(FILE *file, int enableColor) {
+    Trokut trokut;
+    Normala normala;
 
-    float *normalX = malloc(sizeof(float));
-    float *normalY = malloc(sizeof(float));
-    float *normalZ = malloc(sizeof(float));
-    fread(normalX, sizeof(float), 1, file);
-    fread(normalY, sizeof(float), 1, file);
-    fread(normalZ, sizeof(float), 1, file);
-    normala->x = *normalX;
-    normala->y = *normalY;
-    normala->z = *normalZ;
-    trokut->normala = *normala;
+    fread(&normala.x, sizeof(float), 1, file);
+    fread(&normala.y, sizeof(float), 1, file);
+    fread(&normala.z, sizeof(float), 1, file);
+    trokut.normala = normala;
 
     for (int i = 0; i < 3; i++) {
-        Tocka *a = malloc(sizeof(Tocka));
-        float *x = malloc(sizeof(float));
-        float *y = malloc(sizeof(float));
-        float *z = malloc(sizeof(float));
-        fread(x, sizeof(float), 1, file);
-        fread(y, sizeof(float), 1, file);
-        fread(z, sizeof(float), 1, file);
-        a->x = *x;
-        a->y = *y;
-        a->z = *z;
-        *(trokut->tocke + i) = *a;
+        Tocka a;
+        fread(&a.x, sizeof(float), 1, file);
+        fread(&a.y, sizeof(float), 1, file);
+        fread(&a.z, sizeof(float), 1, file);
+        *(trokut.tocke + i) = a;
     }
     if (enableColor) {
-        unsigned int *color = malloc(sizeof(unsigned int));
-        fread(color, sizeof(unsigned int), 1, file);
-        trokut->boja = *color;
+        unsigned int color;
+        fread(&color, sizeof(unsigned int), 1, file);
+        trokut.boja = color;
     }
     return trokut;
 }
 
-Objekt3D *readFileBinary(FILE *file) {
-    Objekt3D *objekt = malloc(sizeof(Objekt3D));
-
+Objekt3D readFileBinary(FILE *file) {
+    Objekt3D objekt;
     readHeader(file);
-    objekt->n = readNumberOfTriangles(file);
-    objekt->trokuti = malloc(sizeof(Trokut) * objekt->n);
-    for (int i = 0; i < objekt->n; i++)
-        *(objekt->trokuti + i) = *readTrokut(file, 1);
+    objekt.n = readNumberOfTriangles(file);
+    objekt.trokuti = malloc(sizeof(Trokut) * objekt.n);
+    for (int i = 0; i < objekt.n; i++)
+        *(objekt.trokuti + i) = readTrokut(file, 1);
     return objekt;
 }
 
@@ -125,50 +111,38 @@ int prefix(const char *pre, const char *str) {
     return strncmp(pre, str, strlen(pre)) == 0;
 }
 
-char *skipLine(FILE *file) {
-    char *tempString = malloc(sizeof(char) * 50);
-    return fgets(tempString, 99, file);
+void skipLine(FILE *file) {
+    char tempString[99];
+    fgets(tempString, 99, file);
 }
 
 char *skipForLength(int stage, const char *string, FILE *file) {
-    char *tempString = malloc(sizeof(char) * 50);
+    char tempString[99];
     return fgets(tempString, stage * 2 + (int) strlen(string) + 1, file);
 }
 
-Objekt3D *readFileText(FILE *file) {
-    Objekt3D *result = malloc(sizeof(Objekt3D));
-    result->trokuti = malloc(sizeof(Trokut) * 5000);
+Objekt3D readFileText(FILE *file) {
+    Objekt3D result;
+    result.trokuti = malloc(sizeof(Trokut) * 5000);
     int counter = 0;
     skipLine(file);
     while (prefix(SOLID_END, skipForLength(1, NORMAL, file)) != 1) {
-        Trokut *trokut = malloc(sizeof(Trokut));
-        Normala *normala = malloc(sizeof(Normala));
-        trokut->tocke = malloc(sizeof(Tocka) * 3);
-        float *normalX = malloc(sizeof(float));
-        float *normalY = malloc(sizeof(float));
-        float *normalZ = malloc(sizeof(float));
+        Trokut trokut;
+        Normala normala;
 
-        fscanf(file, "%f %f %f\n", normalX, normalY, normalZ);
-        normala->x = *normalX;
-        normala->y = *normalY;
-        normala->z = *normalZ;
-        trokut->normala = *normala;
+        fscanf(file, "%f %f %f\n", &normala.x, &normala.y, &normala.z);
+        trokut.normala = normala;
         skipLine(file);
         for (int i = 0; i < 3; i++) {
             skipForLength(3, VERTEX, file);
-            Tocka *a = malloc(sizeof(Tocka));
-            float *x = malloc(sizeof(float));
-            float *y = malloc(sizeof(float));
-            float *z = malloc(sizeof(float));
-            fscanf(file, "%f %f %f\n", x, y, z);
-            a->x = *x;
-            a->y = *y;
-            a->z = *z;
-            *(trokut->tocke + i) = *a;
+            Tocka a;
+            fscanf(file, "%f %f %f\n", &a.x, &a.y, &a.z);
+            *(trokut.tocke + i) = a;
         }
-        *(result->trokuti + counter) = *trokut;
+        *(result.trokuti + counter) = trokut;
         counter++;
     }
-    result->n = counter;
+    result.n = counter;
+    result.trokuti = realloc(result.trokuti, sizeof(Trokut) * counter);
     return result;
 }

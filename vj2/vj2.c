@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <malloc.h>
 #include "stl.h"
 
 
@@ -27,14 +28,15 @@ void printObjekt(Objekt3D *objekt) {
     }
 }
 
-int main299() {
-    FILE *file = fopen("/home/antonio/Downloads/readTest.stl", "rt");
-    Objekt3D *objekt = readFileText(file);
-    /*FILE* writeFile = fopen("/home/antonio/Downloads/myStl", "wb");
-    writeFileBinary(writeFile,objekt);
-    FILE* readFile = fopen("/home/antonio/Downloads/myStl", "rb");
-    Objekt3D* resultObjekt = readFileBinary(readFile);*/
-    printObjekt(objekt);
+int main2() {
+    FILE *file = fopen("/home/antonio/Downloads/primjertxt", "rt");
+    Objekt3D objekt = readFileText(file);
+    //FILE* writeFile = fopen("/home/antonio/Downloads/myStl", "wb");
+    //writeFileBinary(writeFile,objekt);
+    //FILE* readFile = fopen("/home/antonio/Downloads/primjerbin.stl", "rb");
+    //Objekt3D resultObjekt = readFileBinary(readFile);
+    fclose(file);
+    printObjekt(&objekt);
     //FILE* writeText = fopen("/home/antonio/Downloads/readTest.stl", "wt");
     //writeFileText(writeText,"readTest",objekt);
 }
