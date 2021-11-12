@@ -18,8 +18,8 @@ typedef struct {
 } Normala;
 
 typedef struct {
-    Tocka tocke[3];
     Normala normala;
+    Tocka tocke[3];
     unsigned short boja;
 } Trokut;
 

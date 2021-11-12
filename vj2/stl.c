@@ -15,7 +15,7 @@ unsigned int readNumberOfTriangles(FILE *file) {
     fread(&result, sizeof(unsigned int), 1, file);
     return result;
 }
-
+/*
 Trokut readTrokut(FILE *file, int enableColor) {
     Trokut trokut;
     Normala normala;
@@ -39,6 +39,11 @@ Trokut readTrokut(FILE *file, int enableColor) {
     }
     return trokut;
 }
+*/
+Trokut readTrokutSimple(FILE *file) {
+    Trokut trokut;
+    fread(&trokut,50,1,file);
+}
 
 Objekt3D readFileBinary(FILE *file) {
     Objekt3D objekt;
@@ -46,7 +51,7 @@ Objekt3D readFileBinary(FILE *file) {
     objekt.n = readNumberOfTriangles(file);
     objekt.trokuti = malloc(sizeof(Trokut) * objekt.n);
     for (int i = 0; i < objekt.n; i++)
-        *(objekt.trokuti + i) = readTrokut(file, 1);
+        *(objekt.trokuti + i) = readTrokutSimple(file);
     return objekt;
 }
 
@@ -58,7 +63,7 @@ void writeSizeBinary(FILE *file, Objekt3D *objekt3D) {
     unsigned int n = objekt3D->n;
     fwrite(&n, sizeof(unsigned int), 1, file);
 }
-
+/*
 void writeTriangleBinary(FILE *file, Objekt3D *objekt3D) {
     for (int i = 0; i < objekt3D->n; i++) {
         Trokut *trokut = objekt3D->trokuti + i;
@@ -83,11 +88,18 @@ void writeTriangleBinary(FILE *file, Objekt3D *objekt3D) {
         }
     }
 }
+ */
+void writeTriangleBinarySimple(FILE *file, Objekt3D *objekt3D) {
+    for (int i = 0; i < objekt3D->n; i++) {
+        Trokut *trokut = objekt3D->trokuti + i;
+        fwrite(trokut,52,1,file);
+    }
+}
 
 void writeFileBinary(FILE *file, Objekt3D *objekt3D) {
     emptyHeaderWriteBinary(file);
     writeSizeBinary(file, objekt3D);
-    writeTriangleBinary(file, objekt3D);
+    writeTriangleBinarySimple(file, objekt3D);
 }
 
 void writeFileText(FILE *file, char *fileName, Objekt3D *objekt3D) {

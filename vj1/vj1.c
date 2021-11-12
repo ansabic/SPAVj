@@ -131,7 +131,7 @@ Tocka** pozitivni(Poligon *p, int *np) {
 }
 
 
-int main() {
+int main1() {
     int a[20];
     int b[20];
 
