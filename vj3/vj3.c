@@ -97,7 +97,7 @@ int *presjek_oba_sortirana(int *a, int *b, int n, FILE *file) {
 }
 
 
-int main() {
+int main3() {
     int step = 3000000;
     int start = 1000000;
     int max = 30000000;

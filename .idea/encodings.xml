@@ -2,5 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/vj1/primjerbin.stl" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/vj4/dictionary.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/vj4/liar.txt" charset="UTF-16" />
   </component>
 </project>
