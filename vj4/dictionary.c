@@ -89,7 +89,7 @@ int filter(Word *w) {
     int counter = 0;
     while (w->word[counter] != '\0') {
         counter++;
-        if (counter >= 3 && w->count > 5)
+        if (counter >= 2 && w->count > 5)
             return 1;
     }
     return 0;
@@ -102,6 +102,7 @@ Dictionary filterDictionary(Dictionary indict, int (*filter)(Word *w)) {
         if (filter(indict)) {
             point->count = indict->count;
             point->word = indict->word;
+            point->next = create();
             point = point->next;
         }
         indict = indict->next;

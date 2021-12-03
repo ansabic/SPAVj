@@ -45,7 +45,7 @@ int main() {
         buffer = readWord(fd);
     } while (buffer != NULL);
     fclose(fd);
-    print(dict);
+    //print(dict);
     Dictionary new = filterDictionary(dict, filter);
     print(new);
     destroy(dict);
