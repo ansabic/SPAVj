@@ -4,7 +4,7 @@
 #include "string.h"
 
 void print(Dictionary dict) {
-    while (dict != NULL) {
+    while (dict != NULL && dict->count != 0) {
         printf("%s\t%d\n", dict->word, dict->count);
         dict = dict->next;
     }
@@ -25,18 +25,16 @@ Dictionary create() {
     return dict;
 }
 
-int compareStrings(const char *str1, const char *str2) {
-    int counter1 = 0;
-    int counter2 = 0;
-    char c1 = str1[counter1];
-    char c2 = str2[counter2];
+int compareStrings(const char *relative, const char *str) {
+    int counter = 0;
+    char c1 = relative[counter];
+    char c2 = str[counter];
     while (c1 != '\0' && c2 != '\0') {
-        c1 = str1[counter1];
-        c2 = str2[counter2];
-        if (c1 != c2)
+        c1 = relative[counter];
+        c2 = str[counter];
+        if (c1 != c2 && c1 != '\0' && c2 != '\0')
             return c2 - c1;
-        counter1++;
-        counter2++;
+        counter++;
     }
     if (c1 == '\0' && c2 == '\0')
         return 0;
@@ -47,43 +45,66 @@ int compareStrings(const char *str1, const char *str2) {
 }
 
 Dictionary add(Dictionary dict, char *str) {
-    while (dict != NULL) {
-        if (dict->count == 0) {
-            Dictionary newDict = create();
-            strcpy(newDict->word, str);
-            newDict->word = str;
-            newDict->count = 1;
-            return newDict;
-        }
-        int diff = compareStrings(dict->word, str);
-        if (diff < 0) {
-            Dictionary result = malloc(sizeof(Dictionary));
-            strcpy(result->word, str);
-            result->next = dict;
-            result->count = 1;
-            return result;
-        } else if (diff > 0) {
-            if (dict->next != NULL && compareStrings(dict->next->word, str) > 0) {
-                dict = dict->next;
-            } else if (dict->next != NULL && dict->next->word == str) {
-                dict->next->count++;
-                return dict;
-            } else {
-                Dictionary result = create();
-                result->word = str;
-                if (dict->next != NULL)
-                    result->next = dict->next;
-                result->count = 1;
-                dict->next = result;
-                return result;
-            }
-        } else if (diff == 0) {
-            dict->count++;
-            return dict;
-        }
+    //Pocetak, prazan dict
+    if (dict->count == 0) {
+        dict->word = str;
+        dict->count = 1;
+        return dict;
+    }
+    Dictionary temp = dict;
+    Dictionary before = dict;
+    int diff = compareStrings(temp->word, str);
+    //Rijec je veca alfanumericki od relativne u rijecniku
+    while (diff > 0 && temp->next != NULL) {
+        before = temp;
+        temp = temp->next;
+        diff = compareStrings(temp->word, str);
+    }
+    if (diff == 0) {
+        temp->count++;
+        return dict;
+    } else if (diff < 0) {
+        Dictionary new = create();
+        if (temp->next != NULL || before == temp)
+            new->next = temp;
+        new->word = str;
+        new->count = 1;
+        if (before == temp)
+            return new;
+
+        before->next = new;
+        return dict;
+    }
+        //Kraj dict-a
+    else {
+        Dictionary new = create();
+        new->count = 1;
+        new->word = str;
+        temp->next = new;
+        return dict;
     }
 }
 
 int filter(Word *w) {
+    int counter = 0;
+    while (w->word[counter] != '\0') {
+        counter++;
+        if (counter >= 3 && w->count > 5)
+            return 1;
+    }
+    return 0;
+}
 
+Dictionary filterDictionary(Dictionary indict, int (*filter)(Word *w)) {
+    Dictionary newDict = create();
+    Dictionary point = newDict;
+    while (indict != NULL) {
+        if (filter(indict)) {
+            point->count = indict->count;
+            point->word = indict->word;
+            point = point->next;
+        }
+        indict = indict->next;
+    }
+    return newDict;
 }

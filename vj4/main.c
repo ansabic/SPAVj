@@ -4,7 +4,9 @@
 #include "dictionary.h"
 #include "string.h"
 
-int readWord(FILE *fd, char *buffer) {
+char *readWord(FILE *fd) {
+    char *buffer = malloc(sizeof(char) * 20);
+    int i = 0;
     int c;
     do {
         c = fgetc(fd);
@@ -13,21 +15,20 @@ int readWord(FILE *fd, char *buffer) {
     } while (!isalpha(c));
 
     do {
-        *buffer = (char) tolower(c);
-        buffer++;
+        buffer[i] = (char) tolower(c);
+        i++;
         c = fgetc(fd);
         if (c == 146)
             c = '\'';
     } while (isalpha(c) || c == '\'');
 
-    *buffer = '\0';
-    return 1;
+    buffer[i] = '\0';
+    return buffer;
 }
 
 
 int main() {
     FILE *fd;
-    char *buffer = malloc(sizeof(char) * 1024);
     Dictionary dict;
 
     fd = fopen("/home/antonio/CLionProjects/SPAVj/vj4/dummy.txt", "rt");
@@ -37,13 +38,15 @@ int main() {
     }
 
     dict = create();
-    while (readWord(fd, buffer)) {
+    char *buffer = readWord(fd);
+    do {
         printf("%s\n", buffer);
-        char temp[20];
-        strcpy(temp, buffer);
         dict = add(dict, buffer);
-    }
+        buffer = readWord(fd);
+    } while (buffer != NULL);
     fclose(fd);
     print(dict);
+    Dictionary new = filterDictionary(dict, filter);
+    print(new);
     destroy(dict);
 }
