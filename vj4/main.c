@@ -27,7 +27,7 @@ char *readWord(FILE *fd) {
 }
 
 
-int main() {
+int main4() {
     FILE *fd;
     Dictionary dict;
 
