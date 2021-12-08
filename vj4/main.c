@@ -4,9 +4,7 @@
 #include "dictionary.h"
 #include "string.h"
 
-char *readWord(FILE *fd) {
-    char *buffer = malloc(sizeof(char) * 20);
-    int i = 0;
+int readWord(FILE *fd, char *buffer) {
     int c;
     do {
         c = fgetc(fd);
@@ -15,20 +13,21 @@ char *readWord(FILE *fd) {
     } while (!isalpha(c));
 
     do {
-        buffer[i] = (char) tolower(c);
-        i++;
+        *buffer = tolower(c);
+        buffer++;
         c = fgetc(fd);
         if (c == 146)
             c = '\'';
     } while (isalpha(c) || c == '\'');
 
-    buffer[i] = '\0';
-    return buffer;
+    *buffer = '\0';
+    return 1;
 }
 
 
-int main4() {
+int main() {
     FILE *fd;
+    char buffer[1024];
     Dictionary dict;
 
     fd = fopen("/home/antonio/CLionProjects/SPAVj/vj4/dummy.txt", "rt");
@@ -36,17 +35,17 @@ int main4() {
         printf("Error opening file.\n");
         return 0;
     }
-
     dict = create();
-    char *buffer = readWord(fd);
-    do {
-        printf("%s\n", buffer);
-        dict = add(dict, buffer);
-        buffer = readWord(fd);
-    } while (buffer != NULL);
+    while (readWord(fd, buffer)) {
+        char *temp = malloc(sizeof(char) * 20);
+        strcpy(temp, buffer);
+        printf("%s\n", temp);
+        dict = add(dict, temp);
+    }
     fclose(fd);
-    //print(dict);
-    Dictionary new = filterDictionary(dict, filter);
-    print(new);
+    print(dict);
+    dict = filterDictionary(dict, filter);
+    print(dict);
     destroy(dict);
+    return 1;
 }

@@ -14,7 +14,7 @@ Dictionary create();
 
 // dodaje rijec ili uvecava broj pojavljivanja rijeci u rjecniku
 // rijeci se dodaju u abecednom redu
-Dictionary add(Dictionary dict, char *str);
+Dictionary add(Dictionary head, char *str);
 
 // ispisuje sve rijeci i broj pojavljivanja svake rijeci
 void print(Dictionary dict);

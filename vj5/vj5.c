@@ -7,15 +7,15 @@
 #include "constants.h"
 
 struct {
-    void* data;
+    void *data;
     int priority;
 } typedef heapValue;
 
-typedef heapValue* heap;
+typedef heapValue *heap;
 
 heap initHeap() {
     heap h = malloc(sizeof(heapValue) * N);
-    for(int i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
         h[i].data = NULL;
     return h;
 }
@@ -25,25 +25,24 @@ heap insertInHeapIterative(heap heap, heapValue value) {
     while (heap[index].data != NULL)
         index++;
     heap[index] = value;
-    while(index != 0) {
-        heapValue* parent = &heap[(index - 1) / 2];
-        heapValue* child = &heap[index];
-        if(parent->priority < child->priority) {
+    while (index != 0) {
+        heapValue *parent = &heap[(index - 1) / 2];
+        heapValue *child = &heap[index];
+        if (parent->priority < child->priority) {
             heapValue temp = *parent;
             *parent = *child;
             *child = temp;
             index = (index - 1) / 2;
-        }
-        else
+        } else
             return heap;
     }
     return heap;
 }
 
 heap swapTopRecursively(heap heap, int index) {
-    heapValue* parent = &heap[(index - 1) / 2];
-    heapValue* child = &heap[index];
-    if(parent->priority < child->priority) {
+    heapValue *parent = &heap[(index - 1) / 2];
+    heapValue *child = &heap[index];
+    if (parent->priority < child->priority) {
         heapValue temp = *parent;
         *parent = *child;
         *child = temp;
@@ -53,21 +52,20 @@ heap swapTopRecursively(heap heap, int index) {
     return heap;
 }
 
-heap swapBottomRecursively(heap heap, int index, int* size) {
+heap swapBottomRecursively(heap heap, int index, int *size) {
     int newIndex;
-    heapValue* parent = &heap[index];
-    heapValue* lChild = &heap[(index + 1) * 2 - 1];
-    heapValue* rChild = &heap[(index + 1) * 2];
-    heapValue* max;
-    if(lChild->priority >= rChild->priority) {
+    heapValue *parent = &heap[index];
+    heapValue *lChild = &heap[(index + 1) * 2 - 1];
+    heapValue *rChild = &heap[(index + 1) * 2];
+    heapValue *max;
+    if (lChild->priority >= rChild->priority) {
         max = lChild;
         newIndex = (index + 1) * 2 - 1;
-    }
-    else {
+    } else {
         max = rChild;
         newIndex = (index + 1) * 2;
     }
-    if(parent->priority < max->priority) {
+    if (parent->priority < max->priority) {
         heapValue temp = *parent;
         *parent = *max;
         *max = temp;
@@ -86,17 +84,17 @@ heap insertInHeapRecursive(heap heap, heapValue value) {
     return swapTopRecursively(heap, index);
 }
 
-heap removeHeadFromHeapRecursively(heap heap, int* size) {
+heap removeHeadFromHeapRecursively(heap heap, int *size) {
     heap[0] = heap[*size - 1];
     return swapBottomRecursively(heap, 0, size);
 }
 
-int main() {
+int main5() {
     heap heap = initHeap();
     printf("How many elements?\n");
     int elementNumber;
     scanf("%d", &elementNumber);
-    for(int i = 0; i < elementNumber; i++) {
+    for (int i = 0; i < elementNumber; i++) {
         int value;
         printf("Enter priority: \n");
         scanf("%d", &value);
@@ -106,7 +104,7 @@ int main() {
         heap = insertInHeapRecursive(heap, heapValue);
     }
     heap = removeHeadFromHeapRecursively(heap, &elementNumber);
-    for(int i = 0; i < elementNumber; i++) {
-        printf("%d ",heap[i].priority);
+    for (int i = 0; i < elementNumber; i++) {
+        printf("%d ", heap[i].priority);
     }
 }
