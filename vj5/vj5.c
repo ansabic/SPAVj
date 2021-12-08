@@ -20,6 +20,19 @@ heap initHeap() {
     return h;
 }
 
+heap swapTopRecursively(heap heap, int index) {
+    heapValue *parent = &heap[(index - 1) / 2];
+    heapValue *child = &heap[index];
+    if (parent->priority < child->priority) {
+        heapValue temp = *parent;
+        *parent = *child;
+        *child = temp;
+        index = (index - 1) / 2;
+        return swapTopRecursively(heap, index);
+    }
+    return heap;
+}
+
 heap insertInHeapIterative(heap heap, heapValue value) {
     int index = 0;
     while (heap[index].data != NULL)
@@ -39,18 +52,14 @@ heap insertInHeapIterative(heap heap, heapValue value) {
     return heap;
 }
 
-heap swapTopRecursively(heap heap, int index) {
-    heapValue *parent = &heap[(index - 1) / 2];
-    heapValue *child = &heap[index];
-    if (parent->priority < child->priority) {
-        heapValue temp = *parent;
-        *parent = *child;
-        *child = temp;
-        index = (index - 1) / 2;
-        return swapTopRecursively(heap, index);
-    }
-    return heap;
+heap insertInHeapRecursive(heap heap, heapValue value) {
+    int index = 0;
+    while (heap[index].data != NULL)
+        index++;
+    heap[index] = value;
+    return swapTopRecursively(heap, index);
 }
+
 
 heap swapBottomRecursively(heap heap, int index, int *size) {
     int newIndex;
@@ -74,14 +83,6 @@ heap swapBottomRecursively(heap heap, int index, int *size) {
         return swapBottomRecursively(heap, index, size);
     }
     return heap;
-}
-
-heap insertInHeapRecursive(heap heap, heapValue value) {
-    int index = 0;
-    while (heap[index].data != NULL)
-        index++;
-    heap[index] = value;
-    return swapTopRecursively(heap, index);
 }
 
 heap removeHeadFromHeapRecursively(heap heap, int *size) {
