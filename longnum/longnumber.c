@@ -41,8 +41,8 @@ LongNumber reverse(LongNumber num) {
     int *array = malloc(sizeof(int) * DIGIT_LIMIT);
     int counter = 0;
     while (num != NULL) {
-        if (counter % DIGIT_LIMIT == 0)
-            realloc(array, (counter / DIGIT_LIMIT) * DIGIT_LIMIT * sizeof(int));
+        if (counter % DIGIT_LIMIT == 0 && counter != 0)
+            realloc(array, (counter / DIGIT_LIMIT + 1) * DIGIT_LIMIT * sizeof(int));
         array[counter] = num->z;
         counter++;
         num = num->next;
@@ -135,5 +135,20 @@ LongNumber mul_by_pow10(LongNumber num, int pow) {
 }
 
 LongNumber mul_longnum(LongNumber a, LongNumber b) {
-    return NULL;
+    LongNumber currentB = b;
+    LongNumber result = malloc(sizeof(LongNumber));
+    result->z = 0;
+    int counter = 0;
+    while (currentB != NULL) {
+        LongNumber number = mul_by_digit(a, currentB->z);
+        LongNumber temp = mul_by_pow10(number, counter);
+        counter++;
+        result = add_longnum(result, temp);
+        currentB = currentB->next;
+    }
+    return result;
+}
+
+void delete_longnum(LongNumber num) {
+    free(num);
 }

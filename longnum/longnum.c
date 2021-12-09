@@ -15,7 +15,7 @@ int main() {
     LongNumber nume = mul_by_pow10(numd, 3);
     print_longnum(nume);
 
-    /*LongNumber numf = mul_longnum(numa, numb);
+    LongNumber numf = mul_longnum(numa, numb);
     print_longnum(numf);
 
     delete_longnum(numa);
@@ -23,5 +23,5 @@ int main() {
     delete_longnum(numc);
     delete_longnum(numd);
     delete_longnum(nume);
-    delete_longnum(numf);*/
+    delete_longnum(numf);
 }
