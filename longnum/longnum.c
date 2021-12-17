@@ -3,7 +3,7 @@
 //
 #include "longnumber.h"
 
-int main() {
+int mainLong() {
     LongNumber numa = read_longnum("/home/antonio/CLionProjects/SPAVj/longnum/a.txt");
     print_longnum(numa);
     LongNumber numb = read_longnum("/home/antonio/CLionProjects/SPAVj/longnum/b.txt");

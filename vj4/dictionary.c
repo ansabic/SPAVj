@@ -4,7 +4,7 @@
 #include "string.h"
 
 void print(Dictionary dict) {
-    while (dict != NULL && dict->word != NULL) {
+    while (dict != NULL) {
         printf("%s\t%d\n", dict->word, dict->count);
         dict = dict->next;
     }
