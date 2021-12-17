@@ -35,7 +35,7 @@ void print_longnum(LongNumber num) {
     printf("\n");
 }
 
-LongNumber reverse(LongNumber num) {
+LongNumber reverseLong(LongNumber num) {
     LongNumber head = num;
     LongNumber before = num;
     int *array = malloc(sizeof(int) * DIGIT_LIMIT);
@@ -59,8 +59,8 @@ LongNumber reverse(LongNumber num) {
 }
 
 LongNumber add_longnum(LongNumber a, LongNumber b) {
-    LongNumber currentA = reverse(a);
-    LongNumber currentB = reverse(b);
+    LongNumber currentA = reverseLong(a);
+    LongNumber currentB = reverseLong(b);
     LongNumber head = malloc(sizeof(LongNumber));
     LongNumber before = head;
     LongNumber resultPosition = head;
@@ -88,11 +88,11 @@ LongNumber add_longnum(LongNumber a, LongNumber b) {
         resultPosition->z = carry;
     else
         before->next = NULL;
-    return reverse(head);
+    return reverseLong(head);
 }
 
 LongNumber mul_by_digit(LongNumber num, int z) {
-    LongNumber currentA = reverse(num);
+    LongNumber currentA = reverseLong(num);
     LongNumber head = malloc(sizeof(LongNumber));
     LongNumber before = head;
     LongNumber resultPosition = head;
@@ -112,11 +112,11 @@ LongNumber mul_by_digit(LongNumber num, int z) {
         resultPosition->z = carry;
     else
         before->next = NULL;
-    return reverse(head);
+    return reverseLong(head);
 }
 
 LongNumber mul_by_pow10(LongNumber num, int pow) {
-    LongNumber reversed = reverse(num);
+    LongNumber reversed = reverseLong(num);
     LongNumber head = malloc(sizeof(LongNumber));
     LongNumber new = head;
     for (int i = 0; i < pow; i++) {
@@ -131,7 +131,7 @@ LongNumber mul_by_pow10(LongNumber num, int pow) {
         reversed = reversed->next;
     }
     old->next = NULL;
-    return reverse(head);
+    return reverseLong(head);
 }
 
 LongNumber mul_longnum(LongNumber a, LongNumber b) {

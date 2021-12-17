@@ -13,7 +13,7 @@ typedef Digit *LongNumber;
 // pomocna funkcija koja okrece listu znamenaka, trebati ce na vise mjesta
 // jer ce se operacije uglavnom oslanjati na dodavanje u glavu liste
 // ne gradi novu listu nego preuredjuje dobivenu listu
-LongNumber reverse(LongNumber num);
+LongNumber reverseLong(LongNumber num);
 
 // cita broj iz tekstualne datoteke znamenku po znamenku i gradi listu (dugi broj)
 LongNumber read_longnum(char *fname);

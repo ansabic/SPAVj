@@ -24,31 +24,99 @@ Element *push(Element *list, int value) {
 }
 
 Element *filterOdds(Element *lst) {
-
-    if (lst == NULL) {
+    if (lst == NULL)
         return NULL;
-    }
-
-    Element *pt = lst;
-    Element *tmp = lst->next;
-    while (tmp != NULL) {
-        if (tmp->value % 2 != 0) {
-            pt->next = tmp->next;
-            free(tmp);
-            tmp = pt->next;
+    Element *current = lst;
+    Element *next = current->next;
+    while (next != NULL) {
+        if (next->value % 2 != 0) {
+            current->next = next->next;
+            free(next);
+            next = current->next;
         } else {
-            pt = pt->next;
-            tmp = tmp->next;
+            current = next;
+            next = next->next;
+        }
+
+    }
+    if (current->value % 2 != 0) {
+        next = lst;
+        lst = lst->next;
+        free(next);
+    }
+    return lst;
+}
+
+Element *splitEvery2(Element *list) {
+    if (list == NULL)
+        return NULL;
+    Element *newList = list;
+    Element *current = newList;
+    while (current != NULL) {
+        if (current->next != NULL && current->next->next != NULL) {
+            Element *temp = current->next->next;
+            Element *toFree = current->next;
+            current->next = temp;
+            free(toFree);
+            current = temp;
+        } else {
+            current->next = NULL;
+            current = NULL;
         }
     }
+    return newList;
+}
 
-    if (lst->value % 2 != 0) {
-        tmp = lst;
-        lst = lst->next;
-        free(tmp);
+Element *deleteEnd(Element *list) {
+    Element *current = list;
+    if (current == NULL || current->next == NULL) {
+        free(current);
+        return NULL;
     }
+    while (current->next->next != NULL)
+        current = current->next;
+    free(current->next);
+    current->next = NULL;
+    return list;
+}
 
-    return lst;
+Element *reverse(Element *list) {
+    Element *newList = NULL;
+    while (list != NULL) {
+        Element *temp = list;
+        list = list->next;
+        temp->next = newList;
+        newList = temp;
+    }
+    return newList;
+}
+
+Element *deleteN(Element *list, int n) {
+    if (list == NULL)
+        return NULL;
+    Element *current = list;
+    Element *next = current->next;
+    while (next != NULL) {
+        if (next->value == n) {
+            if (next->next != NULL) {
+                current->next = next->next;
+                free(next);
+            } else
+                current->next = NULL;
+        }
+        current = current->next;
+        if (current != NULL)
+            next = current->next;
+        else
+            next = NULL;
+    }
+    if (list->value == n) {
+        current = list;
+        list = list->next;
+        free(current);
+
+    }
+    return list;
 }
 
 void printElements(Element *list) {
@@ -62,6 +130,7 @@ void printElements(Element *list) {
 
 int main() {
     Element *list = NULL;
+    list = push(list, 7);
     list = push(list, 0);
     list = push(list, 12);
     list = push(list, 7);
@@ -69,7 +138,16 @@ int main() {
     list = push(list, 3);
     list = push(list, 1);
     list = push(list, 7);
-    list = filterOdds(list);
+    list = push(list, 7);
+    list = push(list, 0);
+    list = push(list, 12);
+    list = push(list, 7);
+    list = push(list, 2);
+    list = push(list, 3);
+    list = push(list, 1);
+    list = push(list, 7);
+    printElements(list);
+    list = deleteEnd(list);
     printElements(list);
 }
 
