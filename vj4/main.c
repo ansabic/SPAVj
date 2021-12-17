@@ -39,12 +39,11 @@ int main() {
     while (readWord(fd, buffer)) {
         char *temp = malloc(sizeof(char) * 20);
         strcpy(temp, buffer);
-        printf("%s\n", temp);
         dict = add(dict, temp);
     }
     fclose(fd);
     print(dict);
-    dict = filterDictionary(dict, filter);
+    dict = firstToEnd(dict);
     print(dict);
     destroy(dict);
     return 1;

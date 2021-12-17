@@ -24,6 +24,8 @@ void destroy(Dictionary dict);
 
 int filter(Word *w);
 
+Dictionary firstToEnd(Dictionary head);
+
 Dictionary filterDictionary(Dictionary indict, int (*filter)(Word *w));
 
 #endif
