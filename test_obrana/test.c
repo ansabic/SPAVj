@@ -128,7 +128,7 @@ void printElements(Element *list) {
 }
 
 
-int main() {
+int mainTest() {
     Element *list = NULL;
     list = push(list, 7);
     list = push(list, 0);

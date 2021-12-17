@@ -4,7 +4,7 @@
 #include "string.h"
 
 void print(Dictionary dict) {
-    while (dict != NULL) {
+    while (dict->next != NULL) {
         printf("%s\t%d\n", dict->word, dict->count);
         dict = dict->next;
     }
@@ -27,44 +27,40 @@ Dictionary create() {
 
 Dictionary add(Dictionary head, char *str) {
     Dictionary current = head;
-    while (current->word != NULL) {
-        int diff = strcmp(str, current->word);
-        if (diff < 0) {
-            Dictionary newHead = create();
-            newHead->word = str;
-            newHead->next = current;
-            newHead->count = 1;
-            return newHead;
-        } else if (diff == 0) {
+    if (current->word == NULL) {
+        current->next = NULL;
+        current->word = str;
+        return head;
+    }
+    int diffCurrent = strcmp(str, current->word);
+    if (diffCurrent < 0) {
+        Dictionary new = create();
+        new->word = str;
+        new->next = current;
+        return new;
+    } else if (diffCurrent == 0) {
+        current->count++;
+        return head;
+    }
+    while (current->next != NULL) {
+        int diffNext = strcmp(str, current->next->word);
+        if (diffNext < 0) {
+            Dictionary new = create();
+            new->next = current->next;
+            new->word = str;
+            current->next = new;
+            return head;
+        } else if (diffNext == 0) {
             current->count++;
             return head;
-        } else {
-            Dictionary next = current->next;
-            if (next == NULL) {
-                Dictionary new = create();
-                new->word = str;
-                new->count = 1;
-                current->next = new;
-                return head;
-            } else {
-                int diffNext = strcmp(str, next->word);
-                if (diffNext >= 0)
-                    current = next;
-                else if (diffNext < 0) {
-                    Dictionary new = create();
-                    new->word = str;
-                    new->next = next;
-                    new->count = 1;
-                    current->next = new;
-                    return head;
-                }
-            }
-        }
+        } else
+            current = current->next;
     }
-    current->word = str;
-    current->count = 1;
+    Dictionary new = create();
+    new->next = NULL;
+    new->word = str;
+    current->next = new;
     return head;
-
 }
 
 int filter(Word *w) {
