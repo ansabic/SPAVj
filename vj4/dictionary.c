@@ -29,6 +29,7 @@ Dictionary add(Dictionary head, char *str) {
     Dictionary current = head;
     if (current->word == NULL) {
         current->next = NULL;
+        current->count = 1;
         current->word = str;
         return head;
     }
@@ -36,6 +37,7 @@ Dictionary add(Dictionary head, char *str) {
     if (diffCurrent < 0) {
         Dictionary new = create();
         new->word = str;
+        new->count = 1;
         new->next = current;
         return new;
     } else if (diffCurrent == 0) {
@@ -48,6 +50,7 @@ Dictionary add(Dictionary head, char *str) {
             Dictionary new = create();
             new->next = current->next;
             new->word = str;
+            new->count = 1;
             current->next = new;
             return head;
         } else if (diffNext == 0) {
@@ -59,6 +62,7 @@ Dictionary add(Dictionary head, char *str) {
     Dictionary new = create();
     new->next = NULL;
     new->word = str;
+    new->count = 1;
     current->next = new;
     return head;
 }
