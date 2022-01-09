@@ -25,7 +25,7 @@ int readWord(FILE *fd, char *buffer) {
 }
 
 
-int main() {
+int main4() {
     FILE *fd;
     char buffer[1024];
     Dictionary dict;
