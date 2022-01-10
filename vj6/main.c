@@ -37,13 +37,11 @@ int main() {
         printf("Error opening file.\n");
         return 0;
     }
-
-    wc = 0;
     while (readWordVj6(fd, buffer)) {
         //printf("%s\n", buffer);
-        wc += AddNode(&bst, strdup(buffer));
+        AddNode(&bst, strdup(buffer));
     }
-
+    wc = prebroji(bst);
     fclose(fd);
 
 

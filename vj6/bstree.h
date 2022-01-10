@@ -14,7 +14,7 @@ typedef Node *BSTree;
 
 BSTree NewBSTree();
 
-int AddNode(BSTree *bst, char *word);
+void AddNode(BSTree *bst, char *word);
 
 int BSTHeight(BSTree bst);
 
@@ -27,5 +27,7 @@ void DeleteBSTree(BSTree bst);
 BSTree LoadBSTree(FILE *fd);
 
 int readWord(FILE *fd, char *buffer);
+
+int prebroji(BSTree bst);
 
 #endif

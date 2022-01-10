@@ -11,36 +11,35 @@ BSTree NewBSTree() {
     return tree;
 }
 
-int AddNode(BSTree *bst, char *word) {
+void AddNode(BSTree *bst, char *word) {
     // Rekurzivno se tra?i mjesto za novi ?vor u stablu. Ako rije? postoji u stablu, ne dodaje se.
     // bst parametar je dvostruki pokaziva?.
     if (bst == NULL)
-        return 0;
+        return;
     if ((*bst)->word == NULL) {
         (*bst)->word = word;
-        return 1;
+        return;
     }
     int diff = strcmp(word, (*bst)->word);
     if (diff == 0)
-        return 0;
+        return;
     else if (diff < 0) {
         if ((*bst)->left == NULL) {
             BSTree newNode = NewBSTree();
             newNode->word = word;
             (*bst)->left = newNode;
-            return 1;
+            return;
         } else
-            return AddNode(&((*bst)->left), word);
+            AddNode(&((*bst)->left), word);
     } else if (diff > 0) {
         if ((*bst)->right == NULL) {
             BSTree newNode = NewBSTree();
             newNode->word = word;
             (*bst)->right = newNode;
-            return 1;
+            return;
         } else
-            return AddNode(&((*bst)->right), word);
+            AddNode(&((*bst)->right), word);
     }
-    return 0;
 }
 
 int BSTHeight(BSTree bst) {
@@ -100,6 +99,14 @@ BSTree LoadBSTree(FILE *fd) {
         AddNode(&bst, word);
     }
     return bst;
+}
+
+int prebroji(BSTree bst) {
+    // osnovni slucaj
+    if (bst == NULL)
+        return 0;
+    // generalni slucaj
+    return 1 + prebroji(bst->left) + prebroji(bst->right);
 }
 
 
