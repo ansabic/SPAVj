@@ -43,7 +43,7 @@ int main4() {
     }
     fclose(fd);
     print(dict);
-    dict = firstToEnd(dict);
+    //dict = firstToEnd(dict);
     print(dict);
     destroy(dict);
     return 1;
