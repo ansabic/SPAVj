@@ -5,6 +5,6 @@
 #ifndef SPAVJ_CONSTANTS_H
 #define SPAVJ_CONSTANTS_H
 
-const int N = 15;
+const int N = 1000;
 
 #endif //SPAVJ_CONSTANTS_H

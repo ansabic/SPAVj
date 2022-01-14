@@ -24,7 +24,7 @@ int readWordVj6(FILE *fd, char *buffer) {
     return 1;
 }
 
-int main() {
+int main6() {
     int wc;
     FILE *fd;
     char buffer[1024];
