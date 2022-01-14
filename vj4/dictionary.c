@@ -5,10 +5,9 @@
 
 void print(Dictionary dict) {
     while (dict != NULL) {
-        printf("%s ", dict->word);
+        printf("%s\t%d\n", dict->word, dict->count);
         dict = dict->next;
     }
-    printf("\n");
 }
 
 void destroy(Dictionary dict) {
@@ -76,19 +75,6 @@ int filter(Word *w) {
             return 1;
     }
     return 0;
-}
-
-Dictionary firstToEnd(Dictionary head) {
-    Dictionary temp = create();
-    char *tempStr = strdup(head->word);
-    temp->word = tempStr;
-    temp->count = head->count;
-    temp->next = NULL;
-    Dictionary current = head;
-    while (current->next != NULL)
-        current = current->next;
-    current->next = temp;
-    return head;
 }
 
 Dictionary filterDictionary(Dictionary indict, int (*filter)(Word *w)) {
