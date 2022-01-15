@@ -18,29 +18,10 @@ void AddNode(BSTree *bst, char *word) {
         return;
     }
     int diff = strcmp(word, (*bst)->word);
-    if (diff == 0)
-        return;
-    else if (diff < 0) {
-        if ((*bst)->left == NULL) {
-            BSTree newNode = malloc(sizeof(BSTree));
-            newNode->right = NewBSTree();
-            newNode->left = NewBSTree();
-            newNode->word = word;
-            (*bst)->left = newNode;
-            return;
-        } else
-            AddNode(&((*bst)->left), word);
-    } else if (diff > 0) {
-        if ((*bst)->right == NULL) {
-            BSTree newNode = malloc(sizeof(BSTree));
-            newNode->right = NewBSTree();
-            newNode->left = NewBSTree();
-            newNode->word = word;
-            (*bst)->right = newNode;
-            return;
-        } else
-            AddNode(&((*bst)->right), word);
-    }
+    if (diff < 0)
+        AddNode(&((*bst)->left), word);
+    else if (diff > 0)
+        AddNode(&((*bst)->right), word);
 }
 
 int BSTHeight(BSTree bst) {
