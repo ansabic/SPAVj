@@ -35,8 +35,14 @@ void Insert(HashTable *ht, char *word) {
         ht->load++;
         return;
     }
-    while (current->next != NULL)
+    if(current->word == word)
+        return;
+    while (current->next != NULL) {
         current = current->next;
+        if(current->word == word)
+            return;
+    }
+    ht->load++;
     current->word = word;
 }
 
