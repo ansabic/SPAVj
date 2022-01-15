@@ -24,14 +24,15 @@ unsigned int hash(char *word) {
 }
 
 void Insert(HashTable *ht, char *word) {
-    Bin **table = ht->table;
     // dodaje novu rijec u listu na odgovarajucem pretincu
+    Bin **table = ht->table;
     unsigned int wordHash = hash(word) % ht->size;
     Bin *current = table[wordHash];
     if (current == NULL) {
         current = malloc(sizeof(Bin));
         current->word = word;
         current->next = NULL;
+        ht->load++;
         return;
     }
     while (current->next != NULL)
