@@ -34,7 +34,7 @@ heap swapTopRecursively(heap h, int index) {
 }
 
 
-heap insertInHeapRecursive(heap heap, heapValue value, int* lastIndex) {
+heap insertInHeapRecursive(heap heap, heapValue value, int *lastIndex) {
     heap[*lastIndex] = value;
     (*lastIndex)++;
     return swapTopRecursively(heap, *lastIndex);
@@ -49,18 +49,15 @@ heap swapBottomRecursively(heap h, int index, int size) {
     heap lChild = &h[leftIndex];
     heap rChild = &h[rightIndex];
     heap max;
-    if(leftIndex > size && rightIndex <= size) {
+    if (leftIndex > size && rightIndex <= size) {
         max = lChild;
         newIndex = leftIndex;
-    }
-    else if(rightIndex > size && leftIndex <= size) {
+    } else if (rightIndex > size && leftIndex <= size) {
         max = rChild;
         newIndex = rightIndex;
-    }
-    else if(rightIndex >= size && leftIndex >= size) {
+    } else if (rightIndex >= size && leftIndex >= size) {
         return h;
-    }
-    else if (lChild->priority >= rChild->priority) {
+    } else if (lChild->priority >= rChild->priority) {
         max = lChild;
         newIndex = (index + 1) * 2 - 1;
     } else {
@@ -102,7 +99,7 @@ heap insertInHeapIterative(heap heap, heapValue value) {
     return heap;
 }
 
-int main() {
+int main5() {
     heap heap = initHeap();
     printf("How many elements?\n");
     int elementNumber;

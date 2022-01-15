@@ -4,19 +4,16 @@
 
 BSTree NewBSTree() {
     // Novo prazno stablo
-    BSTree tree = malloc(sizeof(BSTree));
-    tree->right = NULL;
-    tree->left = NULL;
-    tree->word = NULL;
-    return tree;
+    return NULL;
 }
 
 void AddNode(BSTree *bst, char *word) {
     // Rekurzivno se tra?i mjesto za novi ?vor u stablu. Ako rije? postoji u stablu, ne dodaje se.
     // bst parametar je dvostruki pokaziva?.
-    if (bst == NULL)
-        return;
-    if ((*bst)->word == NULL) {
+    if (*bst == NULL) {
+        *bst = malloc(sizeof(BSTree));
+        (*bst)->right = NewBSTree();
+        (*bst)->left = NewBSTree();
         (*bst)->word = word;
         return;
     }
@@ -25,7 +22,9 @@ void AddNode(BSTree *bst, char *word) {
         return;
     else if (diff < 0) {
         if ((*bst)->left == NULL) {
-            BSTree newNode = NewBSTree();
+            BSTree newNode = malloc(sizeof(BSTree));
+            newNode->right = NewBSTree();
+            newNode->left = NewBSTree();
             newNode->word = word;
             (*bst)->left = newNode;
             return;
@@ -33,7 +32,9 @@ void AddNode(BSTree *bst, char *word) {
             AddNode(&((*bst)->left), word);
     } else if (diff > 0) {
         if ((*bst)->right == NULL) {
-            BSTree newNode = NewBSTree();
+            BSTree newNode = malloc(sizeof(BSTree));
+            newNode->right = NewBSTree();
+            newNode->left = NewBSTree();
             newNode->word = word;
             (*bst)->right = newNode;
             return;
@@ -68,7 +69,7 @@ void SaveBSTree(BSTree bst, FILE *fd) {
     // Pre-order ?etnja po stablu (ttenutni ?vor pa djeca)
     if (bst != NULL) {
         char *space = " ";
-        fwrite(bst->word, sizeof(char), strlen(bst->word), fd);
+        fputs(bst->word, fd);
         fwrite(space, sizeof(char), 1, fd);
         SaveBSTree(bst->left, fd);
         SaveBSTree(bst->right, fd);
@@ -81,8 +82,8 @@ void DeleteBSTree(BSTree bst) {
     if (bst != NULL) {
         DeleteBSTree(bst->left);
         DeleteBSTree(bst->right);
+        free(bst->word);
         free(bst);
-        bst = NULL;
     }
 
 }
