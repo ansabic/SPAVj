@@ -9,7 +9,7 @@ HashTable *NewTable(int size) {
     HashTable *result = malloc(sizeof(HashTable));
     result->size = size;
     result->load = 0;
-    result->table = malloc(sizeof(Bin) * size);
+    result->table = malloc(sizeof(Bin*) * size);
     return result;
 }
 
@@ -35,22 +35,21 @@ void Insert(HashTable *ht, char *word) {
         ht->load++;
         return;
     }
-    if(current->word == word)
-        return;
+
     while (current->next != NULL) {
         current = current->next;
-        if(current->word == word)
-            return;
     }
+    Bin* new = malloc(sizeof (Bin));
+    new->next = NULL;
+    new->word = word;
+    current->next = new;
     ht->load++;
-    current->word = word;
 }
 
 int Get(HashTable *ht, char *word) {
     // vraca 0 ili 1 ovisno o tome da li rijec postoji u tablici
     Bin **table = ht->table;
-    if ((*table) == NULL)
-        return 0;
+
     unsigned int wordHash = hash(word) % ht->size;
     Bin *current = table[wordHash];
     while (current != NULL) {
@@ -69,7 +68,9 @@ void DeleteTable(HashTable *ht) {
         while (current != NULL) {
             Bin *temp = current;
             current = current->next;
+            free(temp->word);
             free(temp);
         }
     }
+    free(ht->table);
 }
