@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
+#include <malloc.h>
 #include "hash.h"
 
 int readWordvj7(FILE *fd, char *buffer) {
@@ -43,7 +44,7 @@ void fillTable(HashTable *dict) {
     fclose(fd);
 }
 
-int main7() {
+int main() {
     int i, size;
     HashTable *dict;
 
@@ -57,4 +58,5 @@ int main7() {
                (et - st) / CLOCKS_PER_SEC);
         DeleteTable(dict);
     }
+    free(dict);
 }
