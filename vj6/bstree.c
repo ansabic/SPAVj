@@ -11,9 +11,9 @@ void AddNode(BSTree *bst, char *word) {
     // Rekurzivno se tra?i mjesto za novi ?vor u stablu. Ako rije? postoji u stablu, ne dodaje se.
     // bst parametar je dvostruki pokaziva?.
     if (*bst == NULL) {
-        *bst = malloc(sizeof(BSTree));
-        (*bst)->right = NewBSTree();
-        (*bst)->left = NewBSTree();
+        *bst = malloc(sizeof(Node));
+        (*bst)->right = NULL;
+        (*bst)->left = NULL;
         (*bst)->word = word;
         return;
     }
@@ -22,6 +22,8 @@ void AddNode(BSTree *bst, char *word) {
         AddNode(&((*bst)->left), word);
     else if (diff > 0)
         AddNode(&((*bst)->right), word);
+    else if (diff == 0)
+        free(word);
 }
 
 int BSTHeight(BSTree bst) {
@@ -51,6 +53,7 @@ void SaveBSTree(BSTree bst, FILE *fd) {
     if (bst != NULL) {
         char *space = " ";
         fputs(bst->word, fd);
+        //bez ovog se stopi sve u jednu rijec, provjereno
         fwrite(space, sizeof(char), 1, fd);
         SaveBSTree(bst->left, fd);
         SaveBSTree(bst->right, fd);

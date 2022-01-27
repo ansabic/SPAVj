@@ -43,7 +43,7 @@ void fillTable(HashTable *dict) {
     fclose(fd);
 }
 
-int main() {
+int main7() {
     int i, size;
     HashTable *dict;
 
