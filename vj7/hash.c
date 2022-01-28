@@ -9,7 +9,9 @@ HashTable *NewTable(int size) {
     HashTable *result = malloc(sizeof(HashTable));
     result->size = size;
     result->load = 0;
-    result->table = malloc(sizeof(Bin*) * size);
+    result->table = malloc(sizeof(Bin *) * size);
+    for (int i = 0; i < size; i++)
+        result->table[i] = NULL;
     return result;
 }
 
@@ -25,9 +27,8 @@ unsigned int hash(char *word) {
 
 void Insert(HashTable *ht, char *word) {
     // dodaje novu rijec u listu na odgovarajucem pretincu
-    Bin **table = ht->table;
     unsigned int wordHash = hash(word) % ht->size;
-    Bin *current = table[wordHash];
+    Bin *current = ht->table[wordHash];
     if (current == NULL) {
         current = malloc(sizeof(Bin));
         current->word = word;
@@ -36,13 +37,10 @@ void Insert(HashTable *ht, char *word) {
         return;
     }
 
-    while (current->next != NULL) {
-        current = current->next;
-    }
-    Bin* new = malloc(sizeof (Bin));
-    new->next = NULL;
+    Bin *new = malloc(sizeof(Bin));
+    new->next = ht->table[wordHash];
     new->word = word;
-    current->next = new;
+    ht->table[wordHash] = new;
     ht->load++;
 }
 
@@ -73,4 +71,5 @@ void DeleteTable(HashTable *ht) {
         }
     }
     free(ht->table);
+    free(ht);
 }

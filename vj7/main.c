@@ -58,5 +58,4 @@ int main() {
                (et - st) / CLOCKS_PER_SEC);
         DeleteTable(dict);
     }
-    free(dict);
 }
